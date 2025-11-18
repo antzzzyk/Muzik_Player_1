@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      fx:controller="org.example.ugplayer.MiniPlayerController"
+      spacing="10"
+      alignment="TOP_CENTER"
+      style="-fx-background-color: #FFD484; -fx-border-color: #333; -fx-border-width: 2; -fx-border-radius: 12; -fx-background-radius: 12;">
+
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <!-- Screen -->
+    <VBox spacing="6" alignment="CENTER_LEFT"
+          style="-fx-background-color: #EEEEEE; -fx-border-color: black; -fx-border-width: 2;">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <children>
+                <Circle fx:id="albumCover" radius="28" fill="#808080"/>
+                <VBox spacing="2">
+                    <children>
+                        <Label fx:id="titleLabel" text="Song Title"
+                               style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
+                        <Label fx:id="artistLabel" text="Artist"/>
+                        <Label fx:id="albumLabel" text="Album"/>
+                        <Label fx:id="positionLabel" text="1 of 3"/>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <VBox spacing="2" alignment="CENTER">
+            <children>
+                <Slider fx:id="progressSlider" prefWidth="150.0" disable="true" style="-fx-accent: #333;"/>
+                <Label fx:id="timeLabel" text="0:00 / 0:00" style="-fx-font-size: 11px; -fx-text-fill: #555;"/>
+            </children>
+        </VBox>
+    </VBox>
+
+    <!-- Click wheel -->
+    <StackPane prefWidth="160.0" prefHeight="160.0" alignment="CENTER">
+        <children>
+            <Circle radius="70" fill="#FFD484" stroke="#000000" strokeWidth="2"/>
+            <Circle radius="35" fill="#FFD484" stroke="#000000" strokeWidth="1"/>
+
+            <Label text="Menu" style="-fx-font-weight: bold; -fx-font-size: 13px;">
+                <StackPane.margin>
+                    <Insets top="10"/>
+                </StackPane.margin>
+                <StackPane.alignment>
+                    <Pos>TOP_CENTER</Pos>
+                </StackPane.alignment>
+            </Label>
+
+            <Button fx:id="prevBtn" text="⏮"
+                    style="-fx-background-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold;">
+                <StackPane.alignment>
+                    <Pos>CENTER_LEFT</Pos>
+                </StackPane.alignment>
+            </Button>
+
+            <Button fx:id="nextBtn" text="⏭"
+                    style="-fx-background-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold;">
+                <StackPane.alignment>
+                    <Pos>CENTER_RIGHT</Pos>
+                </StackPane.alignment>
+            </Button>
+
+            <Button fx:id="playPauseBtn" text="▶"
+                    style="-fx-background-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold;">
+                <StackPane.margin>
+                    <Insets bottom="10"/>
+                </StackPane.margin>
+                <StackPane.alignment>
+                    <Pos>BOTTOM_CENTER</Pos>
+                </StackPane.alignment>
+            </Button>
+        </children>
+    </StackPane>
+</VBox>
