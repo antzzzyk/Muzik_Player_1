@@ -44,6 +44,8 @@ public class MiniPlayerUI {
 
     private boolean isPlaying = false;
     private MediaPlayer sharedPlayer;
+    private ChangeListener<MediaPlayer.Status> statusListener;
+    private ChangeListener<Duration> timeListener;
 
     public MiniPlayerUI(MediaPlayer sharedPlayer) {
         stage = new Stage(StageStyle.TRANSPARENT);
@@ -201,12 +203,20 @@ public class MiniPlayerUI {
     }
 
     public void setSharedPlayer(MediaPlayer player) {
+        if (sharedPlayer != null) {
+            if (statusListener != null) sharedPlayer.statusProperty().removeListener(statusListener);
+            if (timeListener != null) sharedPlayer.currentTimeProperty().removeListener(timeListener);
+            sharedPlayer.setOnReady(null);
+        }
+
         this.sharedPlayer = player;
         if (player == null) return;
 
         Media media = player.getMedia();
         if (media != null) loadMetadata(media);
 
+        statusListener = (obs, old, now) -> syncPlayPause(now == MediaPlayer.Status.PLAYING);
+        timeListener = (obs, oldTime, newTime) -> {
         player.statusProperty().addListener((obs, old, now) -> syncPlayPause(now == MediaPlayer.Status.PLAYING));
         player.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
             if (player.getTotalDuration() != null && !player.getTotalDuration().isUnknown()) {
@@ -215,6 +225,16 @@ public class MiniPlayerUI {
                 currentTimeLabel.setText(formatTime(newTime));
                 totalTimeLabel.setText(formatTime(player.getTotalDuration()));
             }
+        };
+
+        player.statusProperty().addListener(statusListener);
+        player.currentTimeProperty().addListener(timeListener);
+        progressBar.setProgress(0);
+        currentTimeLabel.setText("0:00");
+        if (player.getTotalDuration() != null && !player.getTotalDuration().isUnknown()) {
+            totalTimeLabel.setText(formatTime(player.getTotalDuration()));
+        }
+        syncPlayPause(player.getStatus() == MediaPlayer.Status.PLAYING);
         });
         player.setOnReady(() -> {
             Duration total = player.getMedia().getDuration();
