@@ -217,6 +217,8 @@ public class MiniPlayerUI {
 
         statusListener = (obs, old, now) -> syncPlayPause(now == MediaPlayer.Status.PLAYING);
         timeListener = (obs, oldTime, newTime) -> {
+        player.statusProperty().addListener((obs, old, now) -> syncPlayPause(now == MediaPlayer.Status.PLAYING));
+        player.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
             if (player.getTotalDuration() != null && !player.getTotalDuration().isUnknown()) {
                 double progress = newTime.toSeconds() / player.getTotalDuration().toSeconds();
                 progressBar.setProgress(progress);
@@ -233,6 +235,7 @@ public class MiniPlayerUI {
             totalTimeLabel.setText(formatTime(player.getTotalDuration()));
         }
         syncPlayPause(player.getStatus() == MediaPlayer.Status.PLAYING);
+        });
         player.setOnReady(() -> {
             Duration total = player.getMedia().getDuration();
             progressBar.setProgress(0);
